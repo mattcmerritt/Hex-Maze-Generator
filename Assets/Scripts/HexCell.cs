@@ -2,16 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class HexCell
 {
     // position
+    [SerializeField]
     private int x, y, z;
 
     // references to surrounding cells
     private HexCell TopLeft, TopRight, Left, Right, BottomLeft, BottomRight;
 
     // contents of cell
-    private bool isOpen;
+    public bool isOpen;
 
     // constructor
     public HexCell(int x, int y, int z)
