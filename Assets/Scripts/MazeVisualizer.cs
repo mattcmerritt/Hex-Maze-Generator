@@ -18,73 +18,86 @@ public class MazeVisualizer : MonoBehaviour
     public int Radius;
     public Slider RadiusSlider;
 
+    private void Start()
+    {
+        DrawNewMaze();
+    }
+
     void Update()
     {
         // check slider for maze radius
         Radius = (int) RadiusSlider.value;
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.R))
         {
-            DestroyAllHexes();
+            DrawNewMaze();
+        }
+    }
 
-            // set up the maze
-            Maze = GetComponent<Maze>();
-            if (Maze == null)
+    public void CreateAllHexes()
+    {
+        // set up the maze
+        Maze = GetComponent<Maze>();
+        if (Maze == null)
+        {
+            Debug.LogError("NO MAZE FOUND");
+        }
+        Grid = Maze.GenerateMaze(Radius);
+
+        DisplayMaze();
+
+        // move camera to center of maze and zoom out
+        MoveCameraToCenterHex();
+    }
+
+    public void DisplayMaze()
+    {
+        float positionX = 0;
+        float positionY = 0;
+        int lineOffset = Grid.OuterRadius;
+
+        // display the maze
+        for (int z = Grid.OuterRadius; z >= -Grid.OuterRadius; z--)
+        {
+            for (int i = Mathf.Abs(lineOffset); i > 0; i--)
             {
-                Debug.LogError("NO MAZE FOUND");
+                positionX += HorizOffset;
             }
-            Grid = Maze.GenerateMaze(Radius);
 
-            float positionX = 0;
-            float positionY = 0;
-            int lineOffset = Grid.OuterRadius;
-
-            // display the maze
-            for (int z = Grid.OuterRadius; z >= -Grid.OuterRadius; z--)
+            for (int y = Grid.OuterRadius; y >= -Grid.OuterRadius; y--)
             {
-                for (int i = Mathf.Abs(lineOffset); i > 0; i--)
+                for (int x = Grid.OuterRadius; x >= -Grid.OuterRadius; x--)
                 {
-                    positionX += HorizOffset;
-                }
-
-                for (int y = Grid.OuterRadius; y >= -Grid.OuterRadius; y--)
-                {
-                    for (int x = Grid.OuterRadius; x >= -Grid.OuterRadius; x--)
+                    if (x + y + z == 0) // only get cells that will be part of the hex grid
                     {
-                        if (x + y + z == 0) // only get cells that will be part of the hex grid
+                        // if at center hex store coordinates for use later
+                        if (x == y && y == z && z == 0)
                         {
-                            // if at center hex store coordinates for use later
-                            if (x == y && y == z && z == 0)
+                            CenterX = positionX;
+                            CenterY = positionY;
+                        }
+                        if (Grid.GetHexAtPosition(x, y, z).isOpen)
+                        {
+                            if (UseBorder)
                             {
-                                CenterX = positionX;
-                                CenterY = positionY;
-                            }
-                            if (Grid.GetHexAtPosition(x, y, z).isOpen)
-                            {
-                                if(UseBorder)
-                                {
-                                    Instantiate(EmptyHexWithBorder, new Vector3(positionX, positionY, 0f), Quaternion.identity);
-                                }
-                                else
-                                {
-                                    Instantiate(EmptyHex, new Vector3(positionX, positionY, 0f), Quaternion.identity);
-                                }
+                                Instantiate(EmptyHexWithBorder, new Vector3(positionX, positionY, 0f), Quaternion.identity);
                             }
                             else
                             {
-                                Instantiate(FullHex, new Vector3(positionX, positionY, 0f), Quaternion.identity);
+                                Instantiate(EmptyHex, new Vector3(positionX, positionY, 0f), Quaternion.identity);
                             }
-                            positionX += HorizShift;
                         }
+                        else
+                        {
+                            Instantiate(FullHex, new Vector3(positionX, positionY, 0f), Quaternion.identity);
+                        }
+                        positionX += HorizShift;
                     }
                 }
-                positionX = 0;
-                positionY += VertShift;
-                lineOffset--;
             }
-
-            // move camera to center of maze and zoom out
-            MoveCameraToCenterHex();
+            positionX = 0;
+            positionY += VertShift;
+            lineOffset--;
         }
     }
 
@@ -107,5 +120,25 @@ public class MazeVisualizer : MonoBehaviour
         {
             Destroy(hexes[i]);
         }
+    }
+
+    public void UpdateRadius(float sliderInput)
+    {
+        Radius = (int) sliderInput;
+        DrawNewMaze();
+    }
+
+    // toggle border for empty hexes
+    public void ToggleBorder(bool border)
+    {
+        UseBorder = border;
+        DestroyAllHexes();
+        DisplayMaze();
+    }
+
+    public void DrawNewMaze()
+    {
+        DestroyAllHexes();
+        CreateAllHexes();
     }
 }

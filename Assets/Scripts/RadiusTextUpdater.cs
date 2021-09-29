@@ -10,6 +10,6 @@ public class RadiusTextUpdater : MonoBehaviour
     public void UpdateText(float radius)
     {
         int intRadius = (int) radius;
-        RadiusText.SetText("Radius: " + intRadius);
+        RadiusText.SetText("Layers: " + intRadius);
     }
 }
