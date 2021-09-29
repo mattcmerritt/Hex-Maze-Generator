@@ -70,9 +70,35 @@ public class Maze : MonoBehaviour
     public bool CanExpandMaze(HexGrid maze, Vector3Int point)
     {
         // check if the tile is in the bounds of the maze
-        if (InBounds(maze, point))
+        if (InBounds(maze, point) && !maze.GetHexAtPosition(point.x, point.y, point.z).isOpen)
         {
-            return !maze.GetHexAtPosition(point.x, point.y, point.z).isOpen;
+            int emptyCount = 0;
+            // get adjacent points
+            Vector3Int[] neighboringPoints = new Vector3Int[]
+            {
+                    new Vector3Int(point.x, point.y - 1, point.z + 1),
+                    new Vector3Int(point.x + 1, point.y - 1, point.z),
+                    new Vector3Int(point.x + 1, point.y, point.z - 1),
+                    new Vector3Int(point.x, point.y + 1, point.z - 1),
+                    new Vector3Int(point.x - 1, point.y + 1, point.z),
+                    new Vector3Int(point.x - 1, point.y, point.z + 1)
+            };
+            foreach (Vector3Int neighboringPoint in neighboringPoints)
+            {
+                if (maze.GetHexAtPosition(neighboringPoint.x, neighboringPoint.y, neighboringPoint.z).isOpen)
+                {
+                    emptyCount++;
+                }
+            }
+            if (emptyCount > 1)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+
         }
         else
         {

@@ -5,44 +5,53 @@ using UnityEngine;
 public class TextVisualization : MonoBehaviour
 {
     public HexGrid Grid;
+    public Maze Maze;
     private string Output;
 
-    void Start()
+    void Update()
     {
-        // set up an empty hex grid
-        Grid = GetComponent<Maze>().CurrentMaze;
-
-        // print the hex grid
-        Output = "";
-        int SpaceBuffer = Grid.OuterRadius;
-
-        for (int z = Grid.OuterRadius; z >= -Grid.OuterRadius; z--)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            for (int i = Mathf.Abs(SpaceBuffer); i > 0; i--)
+            // set up an empty hex grid
+            Maze = GetComponent<Maze>();
+            if (Maze == null)
             {
-                Output += " ";
+                Debug.LogError("NO MAZE FOUND");
             }
+            Grid = Maze.CurrentMaze;
 
-            for (int y = Grid.OuterRadius; y >= -Grid.OuterRadius; y--)
+            // print the hex grid
+            Output = "";
+            int SpaceBuffer = Grid.OuterRadius;
+
+            for (int z = Grid.OuterRadius; z >= -Grid.OuterRadius; z--)
             {
-                for (int x = Grid.OuterRadius; x >= -Grid.OuterRadius; x--)
+                for (int i = Mathf.Abs(SpaceBuffer); i > 0; i--)
                 {
-                    if (x + y + z == 0) // only get cells that will be part of the hex grid
+                    Output += " ";
+                }
+
+                for (int y = Grid.OuterRadius; y >= -Grid.OuterRadius; y--)
+                {
+                    for (int x = Grid.OuterRadius; x >= -Grid.OuterRadius; x--)
                     {
-                        if(Grid.GetHexAtPosition(x, y, z).isOpen)
+                        if (x + y + z == 0) // only get cells that will be part of the hex grid
                         {
-                            Output += "O ";
-                        }
-                        else
-                        {
-                            Output += "X ";
+                            if (Grid.GetHexAtPosition(x, y, z).isOpen)
+                            {
+                                Output += "O ";
+                            }
+                            else
+                            {
+                                Output += "X ";
+                            }
                         }
                     }
                 }
+                Output += "\n";
+                SpaceBuffer--;
             }
-            Output += "\n";
-            SpaceBuffer--;
+            Debug.Log(Output);
         }
-        Debug.Log(Output);
     }
 }
