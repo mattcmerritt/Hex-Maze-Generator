@@ -217,6 +217,7 @@ GameObject:
   - component: {fileID: 2008907016}
   - component: {fileID: 2008907015}
   - component: {fileID: 2008907017}
+  - component: {fileID: 2008907018}
   m_Layer: 0
   m_Name: Maze
   m_TagString: Untagged
@@ -236,6 +237,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05b6db6379cbae241ad9bbc1dbe6a716, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Grid:
+    OuterRadius: 0
+  Maze: {fileID: 0}
 --- !u!4 &2008907016
 Transform:
   m_ObjectHideFlags: 0
@@ -262,4 +266,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01e6d486c6229874ea16cb419a32dc97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CurrentMaze:
+    OuterRadius: 0
   Radius: 3
+--- !u!114 &2008907018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2008907014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924b90b255149a94680aa25791b10dc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Grid:
+    OuterRadius: 0
+  EmptyHex: {fileID: 3664510821436367036, guid: fe0ed6f2b4567164786e2f92b1c3a6c1, type: 3}
+  FullHex: {fileID: 3473428965132359345, guid: 6aa248aeccbae0b4fa3aa8dc7b52910c, type: 3}
