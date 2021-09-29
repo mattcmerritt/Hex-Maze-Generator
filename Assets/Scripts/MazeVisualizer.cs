@@ -10,6 +10,9 @@ public class MazeVisualizer : MonoBehaviour
     private const float HorizShift = 2.5f;
     private const float VertShift = 2.15f;
     private const float HorizOffset = 1.25f;
+    public Camera MainCamera;
+    private float CenterX;
+    private float CenterY;
 
     void Update()
     {
@@ -41,6 +44,12 @@ public class MazeVisualizer : MonoBehaviour
                     {
                         if (x + y + z == 0) // only get cells that will be part of the hex grid
                         {
+                            // if at center hex store coordinates for use later
+                            if (x == y && y == z && z == 0)
+                            {
+                                CenterX = positionX;
+                                CenterY = positionY;
+                            }
                             if (Grid.GetHexAtPosition(x, y, z).isOpen)
                             {
                                 Instantiate(EmptyHex, new Vector3(positionX, positionY, 0f), Quaternion.identity);
@@ -57,6 +66,16 @@ public class MazeVisualizer : MonoBehaviour
                 positionY += VertShift;
                 lineOffset--;
             }
+
+            // move camera to center of maze and zoom out
+            MoveCameraToCenterHex();
         }
+    }
+
+    // move the camera to the center hex using the stored coordinates from generation
+    public void MoveCameraToCenterHex()
+    {
+        MainCamera.transform.position = new Vector3(CenterX, CenterY, -10f);
+        MainCamera.orthographicSize = Grid.OuterRadius * 3f;
     }
 }
