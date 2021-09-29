@@ -19,6 +19,7 @@ public class HexCell
         this.x = x;
         this.y = y;
         this.z = z;
+        this.isOpen = false;
     }
 
     // connecting a cell to this cell
@@ -76,5 +77,17 @@ public class HexCell
     public HexCell[] GetSurroundingCells()
     {
         return new HexCell[] {TopRight, Right, BottomRight, BottomLeft, Left, TopLeft};
+    }
+
+    // set a cell to be open
+    public void SetOpen()
+    {
+        isOpen = true;
+    }
+
+    // overloaded method to close a cell
+    public void SetOpen(bool value)
+    {
+        isOpen = value;
     }
 }
