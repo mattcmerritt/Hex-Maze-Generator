@@ -5,10 +5,11 @@ using UnityEngine;
 public class Maze : MonoBehaviour
 {
     public HexGrid CurrentMaze;
+    public int Radius;
 
     public void Start()
     {
-        CurrentMaze = GenerateMaze(10);
+        CurrentMaze = GenerateMaze(Radius);
     }
 
     public HexGrid GenerateMaze(int radius)
@@ -21,14 +22,14 @@ public class Maze : MonoBehaviour
         int startX, startY, startZ;
         if (Random.Range(0, 2) == 0)
         {
-            startY = radius; // start on bottom left side
-            startX = -Random.Range(0, radius + 1);
+            startY = radius - 1; // start on bottom left side
+            startX = -Random.Range(0, radius);
             startZ = -(startY + startX);
         }
         else
         {
-            startZ = -radius; // start on bottom side
-            startY = Random.Range(0, radius + 1);
+            startZ = -radius + 1; // start on bottom side
+            startY = Random.Range(0, radius);
             startX = -(startZ + startY);
         }
         stack.Push(new Vector3Int(startX, startY, startZ));
@@ -86,7 +87,7 @@ public class Maze : MonoBehaviour
 
     public void Shuffle(Vector3Int[] arr)
     {
-        for (int i = arr.Length; i  > 0; i--)
+        for (int i = arr.Length - 1; i  > 0; i--)
         {
             int index = Random.Range(0, i);
             Vector3Int temp = arr[i];
