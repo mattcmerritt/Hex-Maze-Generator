@@ -1,30 +1,39 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MazeVisualizer : MonoBehaviour
 {
     public HexGrid Grid;
-    private Maze Maze;
-    public GameObject EmptyHex, FullHex;
+    public Maze Maze;
+    public GameObject EmptyHex, FullHex, EmptyHexWithBorder;
     private const float HorizShift = 2.5f;
     private const float VertShift = 2.15f;
     private const float HorizOffset = 1.25f;
     public Camera MainCamera;
     private float CenterX;
     private float CenterY;
+    public bool UseBorder;
+    public int Radius;
+    public Slider RadiusSlider;
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.G))
+        // check slider for maze radius
+        Radius = (int) RadiusSlider.value;
+
+        if (Input.GetKeyDown(KeyCode.Space))
         {
+            DestroyAllHexes();
+
             // set up the maze
             Maze = GetComponent<Maze>();
             if (Maze == null)
             {
                 Debug.LogError("NO MAZE FOUND");
             }
-            Grid = Maze.CurrentMaze;
+            Grid = Maze.GenerateMaze(Radius);
 
             float positionX = 0;
             float positionY = 0;
@@ -52,7 +61,14 @@ public class MazeVisualizer : MonoBehaviour
                             }
                             if (Grid.GetHexAtPosition(x, y, z).isOpen)
                             {
-                                Instantiate(EmptyHex, new Vector3(positionX, positionY, 0f), Quaternion.identity);
+                                if(UseBorder)
+                                {
+                                    Instantiate(EmptyHexWithBorder, new Vector3(positionX, positionY, 0f), Quaternion.identity);
+                                }
+                                else
+                                {
+                                    Instantiate(EmptyHex, new Vector3(positionX, positionY, 0f), Quaternion.identity);
+                                }
                             }
                             else
                             {
@@ -77,5 +93,19 @@ public class MazeVisualizer : MonoBehaviour
     {
         MainCamera.transform.position = new Vector3(CenterX, CenterY, -10f);
         MainCamera.orthographicSize = Grid.OuterRadius * 3f;
+        if(MainCamera.orthographicSize < 20f)
+        {
+            MainCamera.orthographicSize = 20f;
+        }
+    }
+
+    // destroy all hexes on the screen still
+    public void DestroyAllHexes()
+    {
+        GameObject[] hexes = GameObject.FindGameObjectsWithTag("Hex");
+        for (int i = 0; i < hexes.Length; i++)
+        {
+            Destroy(hexes[i]);
+        }
     }
 }
