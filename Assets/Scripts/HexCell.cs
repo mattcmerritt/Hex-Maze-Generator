@@ -10,6 +10,9 @@ public class HexCell
     // references to surrounding cells
     private HexCell TopLeft, TopRight, Left, Right, BottomLeft, BottomRight;
 
+    // contents of cell
+    private bool isOpen;
+
     // constructor
     public HexCell(int x, int y, int z)
     {
