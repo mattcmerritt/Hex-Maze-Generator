@@ -70,9 +70,9 @@ public class HexCell
     }
 
     // gives the cells position
-    public Vector3 GetPosition() 
+    public Vector3Int GetPosition() 
     {
-        return new Vector3(x, y, z);
+        return new Vector3Int(x, y, z);
     }
 
     // returns surrounding cells starting at the top and going clockwise
