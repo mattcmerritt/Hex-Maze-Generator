@@ -80,11 +80,31 @@ public class MazeVisualizer : MonoBehaviour
                         {
                             if (UseBorder)
                             {
-                                Instantiate(EmptyHexWithBorder, new Vector3(positionX, positionY, 0f), Quaternion.identity);
+                                GameObject tile = Instantiate(EmptyHexWithBorder, new Vector3(positionX, positionY, 0f), Quaternion.identity);
+                                if (Maze.StartPosition == new Vector3Int(x, y, z))
+                                {
+                                    SpriteRenderer renderer = tile.GetComponent<SpriteRenderer>();
+                                    renderer.color = Color.green;
+                                }
+                                else if (Maze.EndPosition == new Vector3Int(x, y, z))
+                                {
+                                    SpriteRenderer renderer = tile.GetComponent<SpriteRenderer>();
+                                    renderer.color = Color.red;
+                                }
                             }
                             else
                             {
-                                Instantiate(EmptyHex, new Vector3(positionX, positionY, 0f), Quaternion.identity);
+                                GameObject tile = Instantiate(EmptyHex, new Vector3(positionX, positionY, 0f), Quaternion.identity);
+                                if (Maze.StartPosition == new Vector3Int(x, y, z))
+                                {
+                                    SpriteRenderer renderer = tile.GetComponent<SpriteRenderer>();
+                                    renderer.color = Color.green;
+                                }
+                                else if (Maze.EndPosition == new Vector3Int(x, y, z))
+                                {
+                                    SpriteRenderer renderer = tile.GetComponent<SpriteRenderer>();
+                                    renderer.color = Color.red;
+                                }
                             }
                         }
                         else

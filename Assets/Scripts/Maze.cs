@@ -6,6 +6,8 @@ public class Maze : MonoBehaviour
 {
     public HexGrid CurrentMaze;
     public int Radius;
+    public Vector3Int StartPosition;
+    public Vector3Int EndPosition;
 
     public void Start()
     {
@@ -33,6 +35,7 @@ public class Maze : MonoBehaviour
             startX = -(startZ + startY);
         }
         stack.Push(new Vector3Int(startX, startY, startZ));
+        StartPosition = new Vector3Int(startX, startY, startZ);
 
         // carving out the maze
         while (stack.Count != 0)
@@ -63,6 +66,8 @@ public class Maze : MonoBehaviour
                 }
             }
         }
+
+        EndPosition = FindEnd(StartPosition, maze);
         
         return maze;
     }
@@ -120,5 +125,53 @@ public class Maze : MonoBehaviour
             arr[i] = arr[index];
             arr[index] = temp;
         }
+    }
+
+    public Vector3Int FindEnd(Vector3Int start, HexGrid maze)
+    {
+        PositionWithDepth end = FindLongestPath(start, 0, maze);
+
+        return end.Position;
+    }
+
+    private PositionWithDepth FindLongestPath(Vector3Int point, int depth, HexGrid maze)
+    {
+        // increment depth to count current cell
+        depth++;
+        // mark cell as path
+        HexCell current = maze.GetHexAtPosition(point.x, point.y, point.z);
+        if (current != null)
+        {
+            current.hasBeenExplored = true;
+        }
+
+        // check surrounding cells
+        Vector3Int[] neighboringPoints = new Vector3Int[]
+        {
+            new Vector3Int(point.x, point.y - 1, point.z + 1),
+            new Vector3Int(point.x + 1, point.y - 1, point.z),
+            new Vector3Int(point.x + 1, point.y, point.z - 1),
+            new Vector3Int(point.x, point.y + 1, point.z - 1),
+            new Vector3Int(point.x - 1, point.y + 1, point.z),
+            new Vector3Int(point.x - 1, point.y, point.z + 1)
+        };
+        // creating a max to compare other paths to
+        PositionWithDepth deepest = new PositionWithDepth(point, depth);
+        foreach (Vector3Int neighboringPoint in neighboringPoints)
+        {
+            // if the cell is open and not explored
+            if (maze.GetHexAtPosition(neighboringPoint.x, neighboringPoint.y, neighboringPoint.z).isOpen && !maze.GetHexAtPosition(neighboringPoint.x, neighboringPoint.y, neighboringPoint.z).hasBeenExplored)
+            {
+                // get the deepest point on this path
+                PositionWithDepth deepestOnPath = FindLongestPath(neighboringPoint, depth, maze);
+                // if this is deeper than the previous max depth, replace max depth
+                if (deepestOnPath.Depth >= deepest.Depth)
+                {
+                    deepest = deepestOnPath;
+                }
+            }
+        }
+
+        return deepest;
     }
 }
