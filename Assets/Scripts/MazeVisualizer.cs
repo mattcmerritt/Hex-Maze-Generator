@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class MazeVisualizer : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class MazeVisualizer : MonoBehaviour
     public bool UseBorder;
     public int Radius;
     public Slider RadiusSlider;
+    public TMP_Text WinTextbox;
 
     private void Start()
     {
@@ -131,6 +133,23 @@ public class MazeVisualizer : MonoBehaviour
             positionX = 0;
             positionY += VertShift;
             lineOffset--;
+        }
+
+        // check win condition
+        if (Maze.CurrentPosition == Maze.EndPosition)
+        {
+            if (Maze.PathList.Count == Maze.VisitedList.Count + 1)
+            {
+                WinTextbox.SetText("Maze Solved Perfectly!");
+            }
+            else
+            {
+                WinTextbox.SetText("Maze Solved!");
+            }
+        }
+        else
+        {
+            WinTextbox.SetText("");
         }
     }
 
@@ -279,6 +298,23 @@ public class MazeVisualizer : MonoBehaviour
             positionX = 0;
             positionY += VertShift;
             lineOffset--;
+        }
+
+        // check win condition
+        if (Maze.CurrentPosition == Maze.EndPosition)
+        {
+            if (Maze.PathList.Count == Maze.VisitedList.Count + 1)
+            {
+                WinTextbox.SetText("Maze Solved Perfectly!");
+            }
+            else
+            {
+                WinTextbox.SetText("Maze Solved!");
+            }
+        }
+        else
+        {
+            WinTextbox.SetText("");
         }
     }
 
