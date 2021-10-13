@@ -8,6 +8,9 @@ public class Maze : MonoBehaviour
     public int Radius;
     public Vector3Int StartPosition;
     public Vector3Int EndPosition;
+    public Vector3Int CurrentPosition;
+    public List<Vector3Int> VisitedList;
+    public List<Vector3Int> PathList;
 
     public void Start()
     {
@@ -36,6 +39,8 @@ public class Maze : MonoBehaviour
         }
         stack.Push(new Vector3Int(startX, startY, startZ));
         StartPosition = new Vector3Int(startX, startY, startZ);
+        CurrentPosition = new Vector3Int(startX, startY, startZ);
+        
 
         // carving out the maze
         while (stack.Count != 0)
@@ -174,4 +179,5 @@ public class Maze : MonoBehaviour
 
         return deepest;
     }
+
 }
