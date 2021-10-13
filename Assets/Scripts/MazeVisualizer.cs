@@ -40,7 +40,6 @@ public class MazeVisualizer : MonoBehaviour
         Maze = GetComponent<Maze>();
         Maze.PathList = new List<Vector3Int>();
         Maze.VisitedList = new List<Vector3Int>();
-        Maze.WallList = new List<Vector3Int>();
         if (Maze == null)
         {
             Debug.LogError("NO MAZE FOUND");
@@ -227,12 +226,14 @@ public class MazeVisualizer : MonoBehaviour
                                 else if (Maze.PathList.Contains(new Vector3Int(x, y, z)))
                                 {
                                     SpriteRenderer renderer = tile.GetComponent<SpriteRenderer>();
-                                    renderer.color = new Color(127, 255, 127);
+                                    //renderer.color = new Color(127, 255, 127);
+                                    renderer.color = Color.cyan;
                                 }
                                 else if (Maze.VisitedList.Contains(new Vector3Int(x, y, z)))
                                 {
                                     SpriteRenderer renderer = tile.GetComponent<SpriteRenderer>();
-                                    renderer.color = new Color(127, 127, 255);
+                                    //renderer.color = new Color(127, 127, 255);
+                                    renderer.color = Color.magenta;
                                 }
                             }
                             else
@@ -256,12 +257,14 @@ public class MazeVisualizer : MonoBehaviour
                                 else if (Maze.PathList.Contains(new Vector3Int(x, y, z)))
                                 {
                                     SpriteRenderer renderer = tile.GetComponent<SpriteRenderer>();
-                                    renderer.color = new Color(127, 255, 127);
+                                    //renderer.color = new Color(127, 255, 127);
+                                    renderer.color = Color.cyan;
                                 }
                                 else if (Maze.VisitedList.Contains(new Vector3Int(x, y, z)))
                                 {
                                     SpriteRenderer renderer = tile.GetComponent<SpriteRenderer>();
-                                    renderer.color = new Color(127, 127, 255);
+                                    //renderer.color = new Color(127, 127, 255);
+                                    renderer.color = Color.magenta;
                                 }
                             }
                         }
@@ -289,15 +292,16 @@ public class MazeVisualizer : MonoBehaviour
         {
             Debug.Log("Hit wall");
             // can't move, do nothing
-            if(!Maze.WallList.Contains(newPos))
-            {
-                Maze.WallList.Add(newPos);
-            }
         }
         else if (newPos == Maze.EndPosition)
         {
-            // win message
+
+            Debug.Log("Maze Solved!");
             currentHex.isCurrent = false;
+            if (!Maze.PathList.Contains(new Vector3Int(Maze.CurrentPosition.x, Maze.CurrentPosition.y, Maze.CurrentPosition.z)))
+            {
+                Maze.PathList.Add(new Vector3Int(Maze.CurrentPosition.x, Maze.CurrentPosition.y, Maze.CurrentPosition.z));
+            }
             Maze.CurrentPosition = newPos;
             newHex.isCurrent = true;
         }
@@ -305,10 +309,10 @@ public class MazeVisualizer : MonoBehaviour
         {
             Debug.Log("Went backwards");
             currentHex.isCurrent = false;
-            //Maze.PathList.Remove(new Vector3Int(Maze.CurrentPosition.x, Maze.CurrentPosition.y, Maze.CurrentPosition.z));
-            if (!Maze.VisitedList.Contains(newPos))
+            Maze.PathList.Remove(new Vector3Int(Maze.CurrentPosition.x, Maze.CurrentPosition.y, Maze.CurrentPosition.z));
+            if(!Maze.VisitedList.Contains(new Vector3Int(Maze.CurrentPosition.x, Maze.CurrentPosition.y, Maze.CurrentPosition.z)))
             {
-                Maze.VisitedList.Add(newPos);
+                Maze.VisitedList.Add(new Vector3Int(Maze.CurrentPosition.x, Maze.CurrentPosition.y, Maze.CurrentPosition.z));
             }
             Maze.CurrentPosition = newPos;
             newHex.isCurrent = true;
@@ -317,10 +321,9 @@ public class MazeVisualizer : MonoBehaviour
         {
             Debug.Log("Hit previously visited tile");
             currentHex.isCurrent = false;
-            //Maze.PathList.Add(new Vector3Int(Maze.CurrentPosition.x, Maze.CurrentPosition.y, Maze.CurrentPosition.z));
-            if(!Maze.VisitedList.Contains(newPos))
+            if (!Maze.PathList.Contains(new Vector3Int(Maze.CurrentPosition.x, Maze.CurrentPosition.y, Maze.CurrentPosition.z)))
             {
-                Maze.VisitedList.Add(newPos);
+                Maze.PathList.Add(new Vector3Int(Maze.CurrentPosition.x, Maze.CurrentPosition.y, Maze.CurrentPosition.z));
             }
             Maze.CurrentPosition = newPos;
             newHex.isCurrent = true;
@@ -329,11 +332,13 @@ public class MazeVisualizer : MonoBehaviour
         {
             Debug.Log("Hit empty tile");
             currentHex.isCurrent = false;
-            //Maze.VisitedList.Add(new Vector3Int(Maze.CurrentPosition.x, Maze.CurrentPosition.y, Maze.CurrentPosition.z));
-            //Maze.PathList.Add(new Vector3Int(Maze.CurrentPosition.x, Maze.CurrentPosition.y, Maze.CurrentPosition.z));
-            if (!Maze.VisitedList.Contains(newPos))
+            if (!Maze.VisitedList.Contains(new Vector3Int(Maze.CurrentPosition.x, Maze.CurrentPosition.y, Maze.CurrentPosition.z)))
             {
-                Maze.VisitedList.Add(newPos);
+                Maze.VisitedList.Add(new Vector3Int(Maze.CurrentPosition.x, Maze.CurrentPosition.y, Maze.CurrentPosition.z));
+            }
+            if (!Maze.PathList.Contains(new Vector3Int(Maze.CurrentPosition.x, Maze.CurrentPosition.y, Maze.CurrentPosition.z)))
+            {
+                Maze.PathList.Add(new Vector3Int(Maze.CurrentPosition.x, Maze.CurrentPosition.y, Maze.CurrentPosition.z));
             }
             Maze.CurrentPosition = newPos;
             newHex.isCurrent = true;
