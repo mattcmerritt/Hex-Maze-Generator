@@ -15,6 +15,7 @@ public class HexCell
     // contents of cell
     public bool isOpen;
     public bool hasBeenExplored;
+    public bool isCurrent;
 
     // constructor
     public HexCell(int x, int y, int z)
