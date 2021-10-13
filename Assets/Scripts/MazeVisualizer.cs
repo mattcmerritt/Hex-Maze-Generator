@@ -45,7 +45,8 @@ public class MazeVisualizer : MonoBehaviour
         {
             Debug.LogError("NO MAZE FOUND");
         }
-        Grid = Maze.GenerateMaze(Radius);
+        Maze.CurrentMaze = Maze.GenerateMaze(Radius);
+        Grid = Maze.CurrentMaze;
 
         DisplayMaze();
 
