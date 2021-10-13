@@ -11,6 +11,7 @@ public class Maze : MonoBehaviour
     public Vector3Int CurrentPosition;
     public List<Vector3Int> VisitedList;
     public List<Vector3Int> PathList;
+    public List<Vector3Int> WallList;
 
     public void Start()
     {

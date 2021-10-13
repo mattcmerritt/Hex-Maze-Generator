@@ -9,7 +9,7 @@ public class MazeVisualizer : MonoBehaviour
     public Maze Maze;
     public GameObject EmptyHex, FullHex, EmptyHexWithBorder;
     private const float HorizShift = 2.5f;
-    private const float VertShift = 2.15f;
+    private const float VertShift = -2.15f;
     private const float HorizOffset = 1.25f;
     public Camera MainCamera;
     private float CenterX;
@@ -40,6 +40,7 @@ public class MazeVisualizer : MonoBehaviour
         Maze = GetComponent<Maze>();
         Maze.PathList = new List<Vector3Int>();
         Maze.VisitedList = new List<Vector3Int>();
+        Maze.WallList = new List<Vector3Int>();
         if (Maze == null)
         {
             Debug.LogError("NO MAZE FOUND");
@@ -287,6 +288,10 @@ public class MazeVisualizer : MonoBehaviour
         {
             Debug.Log("Hit wall");
             // can't move, do nothing
+            if(!Maze.WallList.Contains(newPos))
+            {
+                Maze.WallList.Add(newPos);
+            }
         }
         else if (newPos == Maze.EndPosition)
         {
@@ -299,7 +304,11 @@ public class MazeVisualizer : MonoBehaviour
         {
             Debug.Log("Went backwards");
             currentHex.isCurrent = false;
-            Maze.PathList.Remove(new Vector3Int(Maze.CurrentPosition.x, Maze.CurrentPosition.y, Maze.CurrentPosition.z));
+            //Maze.PathList.Remove(new Vector3Int(Maze.CurrentPosition.x, Maze.CurrentPosition.y, Maze.CurrentPosition.z));
+            if (!Maze.VisitedList.Contains(newPos))
+            {
+                Maze.VisitedList.Add(newPos);
+            }
             Maze.CurrentPosition = newPos;
             newHex.isCurrent = true;
         }
@@ -307,7 +316,11 @@ public class MazeVisualizer : MonoBehaviour
         {
             Debug.Log("Hit previously visited tile");
             currentHex.isCurrent = false;
-            Maze.PathList.Add(new Vector3Int(Maze.CurrentPosition.x, Maze.CurrentPosition.y, Maze.CurrentPosition.z));
+            //Maze.PathList.Add(new Vector3Int(Maze.CurrentPosition.x, Maze.CurrentPosition.y, Maze.CurrentPosition.z));
+            if(!Maze.VisitedList.Contains(newPos))
+            {
+                Maze.VisitedList.Add(newPos);
+            }
             Maze.CurrentPosition = newPos;
             newHex.isCurrent = true;
         }
@@ -315,8 +328,12 @@ public class MazeVisualizer : MonoBehaviour
         {
             Debug.Log("Hit empty tile");
             currentHex.isCurrent = false;
-            Maze.VisitedList.Add(new Vector3Int(Maze.CurrentPosition.x, Maze.CurrentPosition.y, Maze.CurrentPosition.z));
-            Maze.PathList.Add(new Vector3Int(Maze.CurrentPosition.x, Maze.CurrentPosition.y, Maze.CurrentPosition.z));
+            //Maze.VisitedList.Add(new Vector3Int(Maze.CurrentPosition.x, Maze.CurrentPosition.y, Maze.CurrentPosition.z));
+            //Maze.PathList.Add(new Vector3Int(Maze.CurrentPosition.x, Maze.CurrentPosition.y, Maze.CurrentPosition.z));
+            if (!Maze.VisitedList.Contains(newPos))
+            {
+                Maze.VisitedList.Add(newPos);
+            }
             Maze.CurrentPosition = newPos;
             newHex.isCurrent = true;
         }
