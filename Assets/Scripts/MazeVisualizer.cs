@@ -226,14 +226,14 @@ public class MazeVisualizer : MonoBehaviour
                                 else if (Maze.PathList.Contains(new Vector3Int(x, y, z)))
                                 {
                                     SpriteRenderer renderer = tile.GetComponent<SpriteRenderer>();
-                                    //renderer.color = new Color(127, 255, 127);
-                                    renderer.color = Color.cyan;
+                                    renderer.color = new Color(127/255f, 255/255f, 127/255f);
+                                    //renderer.color = Color.cyan;
                                 }
                                 else if (Maze.VisitedList.Contains(new Vector3Int(x, y, z)))
                                 {
                                     SpriteRenderer renderer = tile.GetComponent<SpriteRenderer>();
-                                    //renderer.color = new Color(127, 127, 255);
-                                    renderer.color = Color.magenta;
+                                    renderer.color = new Color(127/255f, 127/255f, 255/255f);
+                                    //renderer.color = Color.magenta;
                                 }
                             }
                             else
@@ -257,14 +257,14 @@ public class MazeVisualizer : MonoBehaviour
                                 else if (Maze.PathList.Contains(new Vector3Int(x, y, z)))
                                 {
                                     SpriteRenderer renderer = tile.GetComponent<SpriteRenderer>();
-                                    //renderer.color = new Color(127, 255, 127);
-                                    renderer.color = Color.cyan;
+                                    renderer.color = new Color(127/255f, 255/255f, 127/255f);
+                                    //renderer.color = Color.cyan;
                                 }
                                 else if (Maze.VisitedList.Contains(new Vector3Int(x, y, z)))
                                 {
                                     SpriteRenderer renderer = tile.GetComponent<SpriteRenderer>();
-                                    //renderer.color = new Color(127, 127, 255);
-                                    renderer.color = Color.magenta;
+                                    renderer.color = new Color(127/255f, 127/255f, 255/255f);
+                                    //renderer.color = Color.magenta;
                                 }
                             }
                         }
