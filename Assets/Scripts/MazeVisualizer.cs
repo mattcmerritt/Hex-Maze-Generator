@@ -280,10 +280,10 @@ public class MazeVisualizer : MonoBehaviour
 
     // for some reason, I realized that x is z, y is x, and z is y. Fix later if possible and then correct these values.
 
-    public void MoveCurrentPosition(HexCell newHex)
+    public void MoveCurrentPosition(Vector3Int newPos)
     {
         HexCell currentHex = Maze.CurrentMaze.GetHexAtPosition(Maze.CurrentPosition.x, Maze.CurrentPosition.y, Maze.CurrentPosition.z);
-        Vector3Int newPos = newHex.GetPosition();
+        HexCell newHex = Maze.CurrentMaze.GetHexAtPosition(newPos.x, newPos.y, newPos.z);
         if (!newHex.isOpen)
         {
             Debug.Log("Hit wall");
@@ -342,38 +342,26 @@ public class MazeVisualizer : MonoBehaviour
 
     public void MoveTopRight()
     {
-        HexCell currentHex = Maze.CurrentMaze.GetHexAtPosition(Maze.CurrentPosition.x, Maze.CurrentPosition.y, Maze.CurrentPosition.z);
-        HexCell newHex = currentHex.GetSurroundingCells()[0];
-        MoveCurrentPosition(newHex);
+        MoveCurrentPosition(new Vector3Int(Maze.CurrentPosition.x, Maze.CurrentPosition.y - 1, Maze.CurrentPosition.z + 1));
     }
     public void MoveRight()
     {
-        HexCell currentHex = Maze.CurrentMaze.GetHexAtPosition(Maze.CurrentPosition.x, Maze.CurrentPosition.y, Maze.CurrentPosition.z);
-        HexCell newHex = currentHex.GetSurroundingCells()[1];
-        MoveCurrentPosition(newHex);
+        MoveCurrentPosition(new Vector3Int(Maze.CurrentPosition.x + 1, Maze.CurrentPosition.y - 1, Maze.CurrentPosition.z));
     }
     public void MoveBottomRight()
     {
-        HexCell currentHex = Maze.CurrentMaze.GetHexAtPosition(Maze.CurrentPosition.x, Maze.CurrentPosition.y, Maze.CurrentPosition.z);
-        HexCell newHex = currentHex.GetSurroundingCells()[2];
-        MoveCurrentPosition(newHex);
+        MoveCurrentPosition(new Vector3Int(Maze.CurrentPosition.x + 1, Maze.CurrentPosition.y, Maze.CurrentPosition.z - 1));
     }
     public void MoveBottomLeft()
     {
-        HexCell currentHex = Maze.CurrentMaze.GetHexAtPosition(Maze.CurrentPosition.x, Maze.CurrentPosition.y, Maze.CurrentPosition.z);
-        HexCell newHex = currentHex.GetSurroundingCells()[3];
-        MoveCurrentPosition(newHex);
+        MoveCurrentPosition(new Vector3Int(Maze.CurrentPosition.x, Maze.CurrentPosition.y + 1, Maze.CurrentPosition.z - 1));
     }
     public void MoveLeft()
     {
-        HexCell currentHex = Maze.CurrentMaze.GetHexAtPosition(Maze.CurrentPosition.x, Maze.CurrentPosition.y, Maze.CurrentPosition.z);
-        HexCell newHex = currentHex.GetSurroundingCells()[4];
-        MoveCurrentPosition(newHex);
+        MoveCurrentPosition(new Vector3Int(Maze.CurrentPosition.x - 1, Maze.CurrentPosition.y + 1, Maze.CurrentPosition.z));
     }
     public void MoveTopLeft()
     {
-        HexCell currentHex = Maze.CurrentMaze.GetHexAtPosition(Maze.CurrentPosition.x, Maze.CurrentPosition.y, Maze.CurrentPosition.z);
-        HexCell newHex = currentHex.GetSurroundingCells()[5];
-        MoveCurrentPosition(newHex);
+        MoveCurrentPosition(new Vector3Int(Maze.CurrentPosition.x - 1, Maze.CurrentPosition.y, Maze.CurrentPosition.z + 1));
     }
 }
